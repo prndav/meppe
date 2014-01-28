@@ -1,0 +1,8 @@
+For creating migrations run:
+  rake db:create_migration NAME=create_posts
+For running server:
+  shotgun config.ru
+  localhost:9393
+  https://github.com/rtomayko/shotgun
+Use TUX as console:
+  tux

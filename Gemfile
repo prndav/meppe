@@ -13,5 +13,6 @@ gem 'sinatra-activerecord'
 
 group :development do
  gem 'sqlite3'
+ # gem 'pg'
  gem 'tux' # provides a Shell for Sinatra so we can interact with our application
 end
