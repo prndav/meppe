@@ -1,0 +1,18 @@
+      <h3>{{category.name || 'New category'}}</h3>
+      <form ng-submit="saveCategory()" role="form" name="categoryForm">
+
+        <div class="form-group">
+          <label for="meppeName">Name:</label>
+          <input class="form-control" id="meppeName" type="text" ng-model="category.name" placeholder="{{category.name || 'Name for meppe'}}" required/>
+        </div>
+
+        <div class="form-group">
+          <label for="meppeDescription">Description:</label>
+          <textarea placeholder="Description for meppe" class="form-control" id="meppeDescription" type="text" ng-model="category.description" size="5"
+                  required>{{category.description || 'Description for meppe'}}</textarea>
+        </div>
+
+        <button type="submit" class="btn btn-default" ng-disabled="categoryForm.$invalid">Save</button>
+        <button class="btn btn-danger" ng-click="cancel()" ng-disabled="isCancelDisabled()">Cancel</button>
+
+      </form>

@@ -1,0 +1,31 @@
+<div class="container">
+  <div class="row">
+    <h1 class="col-md-12">Home page</h1>
+
+    <div class="col-md-3">
+      <div class="bs-sidebar hidden-print" role="complementary">
+        <h3>Meppe categories</h3>
+        <ul class="nav bs-sidenav">
+          <li ng-repeat="category in categories">
+            <a href="/#/{{category.id}}">{{category.name}}</a>
+          <li>
+        </ul>
+      </div>
+    </div>
+
+
+    <div class="col-md-9">
+      <div class="col-sm-12"><h1>Don't just look at those meppes!</h1></div>
+      <div class="col-sm-4" ng-repeat="map in meppes">
+
+        <h3>
+          <a href="/#/meppe/{{map.url}}">{{map.name}}</a>
+        </h3>
+        <p>{{point.description}}<p>
+        <img src="http://placehold.it/250x160" />
+      </div>
+    </div>
+
+  </div>
+</div>
+

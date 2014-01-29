@@ -1,0 +1,6 @@
+[
+  {"name": "Sports", "url":"sports"},
+  {"name": "Entertainment", "url":"entertainment"},
+  {"name": "Culture", "url":"culture"},
+  {"name": "Transport", "url":"transport"}
+]

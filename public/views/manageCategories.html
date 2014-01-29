@@ -1,0 +1,29 @@
+<div class="container">
+  <div class="row">
+    <h1 class="col-md-12">Manage categories</h1>
+
+    <div class="col-md-3">
+      <div class="bs-sidebar hidden-print" role="complementary">
+        <h3>Your categories. not yet</h3>
+        <ul class="nav bs-sidenav manage-nav" nav-menu-directive>
+          <li ng-repeat="category in manageCategories.categories">
+            <a href="/#/manageCategories/{{category.id}}">{{category.name}}</a>
+            <span ng-click="removeCategory(category.id)"  class="glyphicon glyphicon-remove-circle remove"></span>
+          <li>
+        </ul>
+        <span ng-click="addCategory()" class="glyphicon glyphicon-plus-sign add-category"></span>
+
+      </div>
+    </div>
+
+<!-- ManageCategoryCtrl -->
+
+    <div class="col-md-9" ui-view >
+
+    </div>
+
+<!-- end ManageCategoryCtrl -->
+
+  </div>
+</div>
+

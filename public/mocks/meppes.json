@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "category_id": 1,
+    "name": "map-1",
+    "description": "map-1 description",
+    "lat": 49.80414,
+    "long": 24.98667,
+    "url": "map-1"
+  },
+  {
+    "id": 2,
+    "category_id": 1,
+    "name": "map-2",
+    "description": "map-2 description",
+    "lat": 49.80414,
+    "long": 25.98667,
+    "url": "map-2"
+  },
+  {
+    "id": 3,
+    "category_id": 1,
+    "name": "map-3",
+    "description": "map-3 description",
+    "lat": 49.80414,
+    "long": 26.98667,
+    "url": "map-2"
+  }
+]

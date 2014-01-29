@@ -1,0 +1,20 @@
+<div class="pure-u-1-6 map-control" ng-show="controls.editTodo" ng-controller="EditTodoCtrl">
+  <form name="editTodoForm" class="pure-form" ng-submit="submitTodo()">
+    <fieldset>
+      <label for="title">Title:</label>
+      <input id="title" class="pure-input-1" type="text" ng-model="editTodo.title" ng-maxlength="30" required>
+      <label for="description">Description:</label>
+      <input id="description" class="pure-input-1" type="text" ng-model="editTodo.desc">
+      <label for="latitude">Latitude:</label>
+      <input id="latitude" class="pure-input-1" type="text" ng-model="editTodo.lat">
+      <label for="longitude">Longitude:</label>
+      <input id="longitude" class="pure-input-1" type="text" ng-model="editTodo.lng">
+      <div ng-show="editTodo.id !== -1">
+        <label for="completed">Completed:</label>
+        <input id="completed" type="checkbox" ng-model="editTodo.comp">
+      </div>
+      <button class="pure-button pure-button-primary pure-input-1" type="submit">{{editTodo.saveMsg}}</button>
+      <button class="pure-button pure-input-1" ng-click="resetCloseTodoForm()">{{editTodo.cancelMsg}}</button>
+    </fieldset>
+  </form>
+</div>
