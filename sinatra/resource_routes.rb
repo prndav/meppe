@@ -3,6 +3,9 @@ require 'sinatra/base'
 module Sinatra
   module ResourceRoutes
     def resources(resource, options={}, &block)
+      # local_variables.each do |var|
+      #   puts eval var.to_s
+      # end
       resource = resource
       resource_const = convert_to_const(resource.to_s.capitalize)
 
@@ -14,7 +17,20 @@ module Sinatra
         std_resource_routes(resource, resource_const)
       end
 
-      Proc.new(&block).call(resource) if block_given?
+      if block_given?
+        # nested = Proc.new(&block).call
+        # instance_exec(resource) {|r| resources nested, nested: r }
+        create_nested_routes(resource, &block)
+      end
+    end
+
+    def create_nested_routes(resource, &block)
+      nested = Proc.new(&block).call
+      instance_exec(resource) {|r| resources nested, nested: r }
+    end
+
+    def nested(resource)
+      resource
     end
 
     def std_resource_routes(resource, resource_const)
