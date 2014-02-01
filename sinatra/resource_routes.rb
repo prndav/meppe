@@ -3,25 +3,16 @@ require 'sinatra/base'
 module Sinatra
   module ResourceRoutes
     def resources(resource, options={}, &block)
-      # local_variables.each do |var|
-      #   puts eval var.to_s
-      # end
       resource = resource
-      resource_const = convert_to_const(resource.to_s.capitalize)
 
       if options[:nested]
         parent_resource = options[:nested]
-        parent_resource_const = convert_to_const(parent_resource.to_s.capitalize)
-        nested_resource_routes(resource, parent_resource, resource_const, parent_resource_const)
+        nested_resource_routes(resource, parent_resource)
       else
-        std_resource_routes(resource, resource_const)
+        std_resource_routes(resource, options)
       end
 
-      if block_given?
-        # nested = Proc.new(&block).call
-        # instance_exec(resource) {|r| resources nested, nested: r }
-        create_nested_routes(resource, &block)
-      end
+      create_nested_routes(resource, &block) if block_given?
     end
 
     def create_nested_routes(resource, &block)
@@ -33,17 +24,17 @@ module Sinatra
       resource
     end
 
-    def std_resource_routes(resource, resource_const)
-      paths = prepare_paths(resource)
-      define_std_routes(paths, resource_const)
+    def std_resource_routes(resource, options={})
+      paths = prepare_paths(resource, options)
+      define_std_routes(paths, resource)
     end
 
-    def nested_resource_routes(resource, parent_resource, resource_const, parent_resource_const)
+    def nested_resource_routes(resource, parent_resource)
       std_paths = prepare_paths(resource, only: [:show, :edit, :update, :destroy])
       nested_paths = prepare_nested_paths(resource, parent_resource)
 
-      define_std_routes(std_paths, resource_const)
-      define_nested_routes(nested_paths, parent_resource_const, resource_const)
+      define_std_routes(std_paths, resource)
+      define_nested_routes(nested_paths, resource, parent_resource)
     end
 
     def prepare_paths(resource, options = {})
@@ -73,21 +64,21 @@ module Sinatra
       nested_paths[:index]  = "/#{parent_resource}/:id/#{resource}"
       nested_paths[:new]    = "/#{parent_resource}/:id/#{resource}/new"
       nested_paths[:create] = "/#{parent_resource}/:id/#{resource}"
-      # add_paths = prepare_paths(resource, only: [:show, :edit, :update, :destroy])
-      # nested_paths.merge(add_paths)
       nested_paths
     end
 
-    def define_std_routes(paths, const)
+    def define_std_routes(paths, resource)
       paths = paths
-
+      const = convert_to_const(resource.to_s.capitalize)
       paths.each do |action, path|
         send("#{action.to_s}_action", path, const)
       end
     end
 
-    def define_nested_routes(paths, parent_resource_const, resource_const)
+    def define_nested_routes(paths, resource, parent_resource)
       paths = paths
+      parent_resource_const = convert_to_const(parent_resource.to_s.capitalize)
+      resource_const = convert_to_const(resource.to_s.capitalize)
       paths.each do |action, path|
         send("nested_#{action.to_s}_action", path, parent_resource_const, resource_const)
       end
