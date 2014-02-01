@@ -1,6 +1,7 @@
 require 'sinatra'
 require 'sinatra/json'
 require 'sinatra/activerecord'
+require './sinatra/resource_routes'
 require './config/environments'
 
 class Category < ActiveRecord::Base
@@ -16,25 +17,26 @@ class Point < ActiveRecord::Base
 end
 
 class App < Sinatra::Base
+  register Sinatra::ResourceRoutes
   register Sinatra::Namespace
   helpers Sinatra::JSON
 
-  namespace '/categories' do
-    get do # /categories
-      content_type :json
-      Category.all.to_json
-    end
+  # namespace '/categories' do
+  #   get do # /categories
+  #     content_type :json
+  #     Category.all.to_json
+  #   end
 
-    get '/:id' do |id| # /categories/:id
-      content_type :json
-      Category.find(id).to_json
-    end
+  #   get '/:id' do |id| # /categories/:id
+  #     content_type :json
+  #     Category.find(id).to_json
+  #   end
 
-    get '/:category_id/meppes' do |category_id| # categories/:category_id/meppes
-      content_type :json
-      Category.find(category_id).meppes.to_json
-    end
-  end
+  #   get '/:category_id/meppes' do |category_id| # categories/:category_id/meppes
+  #     content_type :json
+  #     Category.find(category_id).meppes.to_json
+  #   end
+  # end
 
   namespace '/meppes' do
     get do # /meppes
@@ -64,8 +66,17 @@ class App < Sinatra::Base
       Point.find(id).to_json
     end
   end
+
+  resources :category do |nested|
+    resources :meppe, nested: nested
+  end
 end
 
+# ['/one', '/two', '/three'].each do |route|
+#   get route do
+#   "Triggered #{route} via GET"
+#   end
+# end
 # before '/protected/*' do
 #   authenticate!
 # end
@@ -74,33 +85,13 @@ end
 #   session[:last_slug] = slug
 # end
 
-# namespace '/orders' do
-#     get do # /orders
-#       @orders = Order.all
-#       @dishes = DISHES
-#       haml %s(orders/index)
-#     end
+# before('/index') { ... } # executed only before the '/index' route
 
-#     get '/new' do # /orders/new
-#       @dishes = DISHES
-#       haml %s(orders/new)
-#     end
+# not_found do
+# "Whoops! You requested a route that wasn't available."
+# end
 
-#     post do # /orders
-#       # binding.pry
-#       @order = Order.create! params[:order]
-#       params[:dishes].each do |dish|
-#         OrderItem.create! order_id: @order.id, dish_id: dish
-#       end
+# error do
+# "Y U NO WORK?"
+# end
 
-#       flash[:notice] = 'Thank you for placing the order.'
-#       redirect '/orders/new'
-#     end
-
-#     put '/:id.json' do |id|
-#       @order = Order.get id
-#       @order.update done: params[:order][:done] # order[done]
-
-#       json message: 'Order was successfully updated.'
-#     end
-#   end
