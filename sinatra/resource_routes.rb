@@ -2,15 +2,22 @@ require 'sinatra/base'
 
 module Sinatra
   module ResourceRoutes
-    def resources(resource, options={}, &block)
-      if options[:scope]
-        parent_resource = options[:scope]
-        nested_resource_routes(resource, parent_resource)
-      else
-        std_resource_routes(resource, options)
-      end
+    def define_resources
+      resource_scope = nil
+      Kernel.send :define_method, :resources do |resource, options={}, &block|
+        if !resource_scope
+          std_resource_routes(resource, options)
+        else
+          nested_resource_routes(resource, resource_scope)
+        end
 
-      block.call(resource) if block_given?
+        if block
+          resource_scope = resource
+          block.call
+        else
+          resource_scope = nil
+        end
+      end
     end
 
     def std_resource_routes(resource, options={})

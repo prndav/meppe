@@ -20,7 +20,7 @@ class App < Sinatra::Base
   register Sinatra::ResourceRoutes
   register Sinatra::Namespace
   helpers Sinatra::JSON
-
+  define_resources
   # namespace '/categories' do
   #   get do # /categories
   #     content_type :json
@@ -67,8 +67,10 @@ class App < Sinatra::Base
     end
   end
 
-  resources :category do |scope|
-    resources :meppe, scope: scope
+  resources :category do
+    resources :meppe do
+      resources :point
+    end
   end
 end
 
