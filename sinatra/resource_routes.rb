@@ -3,25 +3,14 @@ require 'sinatra/base'
 module Sinatra
   module ResourceRoutes
     def resources(resource, options={}, &block)
-      resource = resource
-
-      if options[:nested]
-        parent_resource = options[:nested]
+      if options[:scope]
+        parent_resource = options[:scope]
         nested_resource_routes(resource, parent_resource)
       else
         std_resource_routes(resource, options)
       end
 
-      create_nested_routes(resource, &block) if block_given?
-    end
-
-    def create_nested_routes(resource, &block)
-      nested = Proc.new(&block).call
-      instance_exec(resource) {|r| resources nested, nested: r }
-    end
-
-    def nested(resource)
-      resource
+      block.call(resource) if block_given?
     end
 
     def std_resource_routes(resource, options={})

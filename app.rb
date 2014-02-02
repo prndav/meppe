@@ -67,10 +67,8 @@ class App < Sinatra::Base
     end
   end
 
-  # resources :category do |nested|
-  resources :category do
-    # resources :meppe, nested: nested
-    nested :meppe
+  resources :category do |scope|
+    resources :meppe, scope: scope
   end
 end
 
